@@ -27,6 +27,12 @@
                         <h6 class="mb-3 text-dark">
                             <i class="ri-bank-card-line align-bottom me-2"></i>Members
                         </h6>
+                        <select class="form-select my-filter d-inline my-3 w-25" id="cat_filter">
+                            <option selected value=''>By Category</option>
+                            <option value="Gym">Gym</option>
+                            <option value="Trainer">Trainer</option>
+                            <option value="Student">student</option>
+                        </select>
                         <div class="table-responsive">
                             <table id="all-member-table" class="table mb-2 align-middle display nowrap responsive  small"
                                 cellspacing="0" style="width: 100%; border-collapse: separate;">
@@ -38,6 +44,7 @@
                                         <th>DOB</th>
                                         <th>Duration</th>
                                         <th>Contact</th>
+                                        <th>Catrgory</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -66,12 +73,17 @@
       
     <script>
         $(document).ready(function () {
-           var table = $('#all-member-table').DataTable({
+           var table =  $('#all-member-table').DataTable({
                 responsive: true,
                 processing: true,
                 serverSide: true,
-                sAjaxSource: {% url 'data' %},  // new url
-               
+                sAjaxSource: "{% url 'data' %}",  // new url
+                "fnServerParams": function ( aoData ) {
+                    aoData.push( 
+                        { "name": "category", "value": $("#cat_filter").val() },
+                        //{ "name": "pink", "value": $("#cat_filter").val() } 
+                    );
+                },
                 "columnDefs": [
                 {
                     targets: 0,
@@ -82,7 +94,6 @@
                 {
                     "targets": 1,
                     name: 'name',
-                    type: "html",
                     "data": {},
                     "render": function ( data, type, full, meta ) {
                         return `<a href="http://127.0.0.1:8005?member=${data[1]}" class="text-dark fw-bold">${data[1]}</a> <br> #GYM${data[0] }`;
@@ -105,14 +116,19 @@
                     "data": 4,
                     "data": {},
                     "render": function ( data, type, full, meta ) {
-                        return `${data[4]} ${data[6]}`;
+                        return `${data[4]} ${data[7]}`;
                     }
-                   
+                    
                 } ,
                 {
                     "targets": 5,
                     name: 'contact',
                     "data": 5
+                },
+                {
+                    "targets": 6,
+                    name: 'category',
+                    "data": 6
                 },
                 {
                     "targets": -1,
@@ -128,14 +144,17 @@
                 "pageLength": 5,
                 lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 100]],
             });
-
+        
             /*$("body").on('click', ".viewBtn", function(){
                 var data = table.row( $(this).parents('tr') ).data();
                 console.log(data[4]);
                 window.location.href = "{% url 'home' %}"+"2"
             });*/
+            $("body").on('change', '.my-filter', function() {
+                table.draw()
+            });
 
-            
+           
         });
     </script>
   </body>
