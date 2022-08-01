@@ -19,6 +19,7 @@ class Member(models.Model):
     duration = models.IntegerField(null=True, blank=True)
     duration_type = models.CharField(max_length=100, choices=DURATION_CHOICES, blank=True, null=True)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE)
+    categories = models.ManyToManyField(Category, related_name="categories")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

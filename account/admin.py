@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 from .forms import UserAdminCreationForm, UserAdminChangeForm
 from django.contrib.auth.models import Group
-admin.site.unregister(Group)
+# admin.site.unregister(Group)
 
 
 
@@ -20,7 +20,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ['is_staff']
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name','gender', 'phone', 'date_of_birth')}),
+        ('Personal info', {'fields': ('first_name', 'last_name','gender', 'phone', 'date_of_birth', 'category')}),
         ('Permissions', {'fields': ('is_staff','is_active','is_superuser','groups','user_permissions')}),
         ('Important dates', {'fields': ('last_login','date_joined')}),
     )
@@ -29,7 +29,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name','email', 'password1', 'password2', 'is_staff','is_active')}
+            'fields': ('first_name','email','category', 'password1', 'password2', 'is_staff','is_active')}
         ),
     )
     search_fields = ['email']

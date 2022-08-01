@@ -78,12 +78,14 @@
                 processing: true,
                 serverSide: true,
                 sAjaxSource: "{% url 'data' %}",  // new url
+
                 "fnServerParams": function ( aoData ) {
                     aoData.push( 
                         { "name": "category", "value": $("#cat_filter").val() },
-                        //{ "name": "pink", "value": $("#cat_filter").val() } 
+                        { "name": "pink", "value": $("#cat_filter").val() } 
                     );
                 },
+
                 "columnDefs": [
                 {
                     targets: 0,
@@ -127,6 +129,7 @@
                 },
                 {
                     "targets": 6,
+                    orderable: false,
                     name: 'category',
                     "data": 6
                 },
@@ -151,7 +154,7 @@
                 window.location.href = "{% url 'home' %}"+"2"
             });*/
             $("body").on('change', '.my-filter', function() {
-                table.draw()
+                table.draw();
             });
 
            
